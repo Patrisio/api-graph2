@@ -1,0 +1,27 @@
+.node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+
+.node text { font: 16px sans-serif; }
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(.5);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(.5);
+    }
+}
