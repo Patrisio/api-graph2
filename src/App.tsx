@@ -7,7 +7,7 @@ export default function App() {
 	return (
 		<ErrorBoundary>
 			<Routes>
-				<Route path='/' element={<Graph />} />
+				<Route path='/api-graph2/' element={<Graph />} />
 			</Routes>
 		</ErrorBoundary>
 	);
