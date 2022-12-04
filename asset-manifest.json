@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/api-graph2/static/css/main.12c3e7cd.css",
+    "main.js": "/api-graph2/static/js/main.54fa70e7.js",
+    "index.html": "/api-graph2/index.html",
+    "main.12c3e7cd.css.map": "/api-graph2/static/css/main.12c3e7cd.css.map",
+    "main.54fa70e7.js.map": "/api-graph2/static/js/main.54fa70e7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.12c3e7cd.css",
+    "static/js/main.54fa70e7.js"
+  ]
+}
