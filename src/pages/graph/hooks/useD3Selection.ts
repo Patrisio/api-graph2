@@ -75,8 +75,8 @@ export default function useD3Selection() {
     const setGraphWidth = (width: number) => {
         d3
             .select('.graph')
-            .transition()
-            .duration(230)
+            // .transition() // Время данной анимации ломает логику подсвечивания нод в fullGraph
+            // .duration(230)
             .style('width', `${width}px`);
     };
 

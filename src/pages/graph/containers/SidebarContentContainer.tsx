@@ -40,8 +40,11 @@ export default function SidebarContentContainer({
     const isVisibleDepsTree = prevHighlightedNodes.length > 0 && isNumber(currentPointerIndex);
     const [nodeName, setNodeName] = useState<string>('');
 
-    const updateNodeName = (event: ChangeEvent<HTMLInputElement>) => {
-        setNodeName(event.target.value);
+    const autocompleteOptions = dependencyListMap ? Object.keys(dependencyListMap).map((nodeName) => ({label: nodeName})) : [];
+
+
+    const updateNodeName = (nodeName: string) => {
+        setNodeName(nodeName);
     };
 
     const getCurrentPointerIndex = () => {
@@ -98,6 +101,7 @@ export default function SidebarContentContainer({
         <SidebarContentView
             nodeName={nodeName}
             isDisabledResetButton={prevHighlightedNodes.length === 0}
+            autocompleteOptions={autocompleteOptions}
             depsTreeUI={
                 <DepsTreeContainer
                     deps={depsTreeData}

@@ -19,7 +19,6 @@ function renderRow(props: ListChildComponentProps) {
 }
 
 export const VirtualizedList = ({items}: any) => {
-	console.log(items);
 	return (
 		<Box
 			sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }}

@@ -102,12 +102,11 @@ export default function useHierarchyGraph(graphData: any) {
     const updateGraph = (foundNode: any) => {
         const filteredNodes = handleGraphNodes(foundNode);
       	setFoundEntitiesCount(filteredNodes.size());
-
       	const nodesList = filteredNodes.nodes();
-		filteredNodes.each(({data: d3Node}: any, i: number) => {
+        filteredNodes.each(({data: d3Node}: any, i: number) => {
             const {typeData, description, id, type, children} = d3Node;
-            
         	const currentNode = nodesList[i];
+
 			setPrevHighlightedNodes(prev => ([
 				...prev,
 				{

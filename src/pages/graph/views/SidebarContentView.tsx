@@ -8,6 +8,9 @@ import Tab from '@mui/material/Tab';
 import {GraphContext} from '../contexts/GraphProvider';
 import {GRAPH_RENDERING_STATUS} from '../contexts/types';
 import {FileUploader} from '../../../components/FileUploader';
+import Autocomplete from '@mui/material/Autocomplete';
+
+type AutocompleteOption = {label: string};
 
 type SidebarContentProps = {
     nodeName: string,
@@ -19,16 +22,17 @@ type SidebarContentProps = {
     setFullGraphData: (e: any) => void,
     highlightGraphLinksByNodeName: (nodeName: string, graphData?: any, forceHandleGraph?: boolean) => void,
     resetGraph: VoidFunction,
-    updateNodeName: (event: ChangeEvent<HTMLInputElement>) => void,
+    updateNodeName: (nodeName: string) => void,
     setDependencyListToGraphData: (e: any) => void,
     setFrontApi: any;
+    autocompleteOptions: AutocompleteOption[];
 };
 
 function TabPanel({value, index, children}: any) {
     return (
         <div>
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{ pt: 3 }}>
                     {children}
                 </Box>
             )}
@@ -49,9 +53,11 @@ export default function SidebarContentView({
     resetGraph,
     setDependencyListToGraphData,
     setFrontApi,
+    autocompleteOptions,
 }: SidebarContentProps) {
     const {fullGraph, setGraph} = useContext(GraphContext);
     const [tabIndex, setTabIndex] = useState(0);
+
     const switchTabPanel = (_: React.SyntheticEvent, tabIndex: number) => {
         if (tabIndex === 0) {
             setGraph(prev => ({
@@ -69,13 +75,14 @@ export default function SidebarContentView({
         setTabIndex(tabIndex);
     };
 
-    const handleNodeName = (event: any) => {
-        if (event.key !== 'Enter') return;
+    const preventDefaultByEnterPress = (event: any): boolean => {
+        if (event.key !== 'Enter') return false;
 
         event.preventDefault();
+        return true;
+    };
 
-        const nodeName = event.target.value;
-
+    const handleNodeName = (nodeName: string) => {
         if (tabIndex === 0) {
             highlightGraphLinksByNodeName(nodeName, fullGraphData);
         }
@@ -106,14 +113,40 @@ export default function SidebarContentView({
             </Tabs>
 
             <TabPanel value={tabIndex} name={'fullGraph'} index={0}>
-                <TextField
-                    label='Введите название сущности'
-                    variant='outlined'
-                    onChange={updateNodeName}
-                    value={nodeName}
-                    onKeyPress={handleNodeName}
-                    style={{width: 250}}
-                />
+                <div style={{display: 'flex', width: 400}}>
+                    <Autocomplete
+                        value={{label: nodeName}}
+                        disablePortal
+                        options={autocompleteOptions}
+                        sx={{ width: 300 }}
+                        onChange={(_, reason) => {
+                            if (!reason) return;
+                            const {label: selectedNodeName} = reason;
+
+                            updateNodeName(selectedNodeName);
+                            handleNodeName(selectedNodeName);
+                        }}
+                        renderInput={(params) => {
+                            return <TextField {...params} label='Введите название сущности'
+                                onKeyPress={(event: any) => {
+                                    const nodeName = event.target.value as string;
+                                    updateNodeName(nodeName);
+                                    const enterPressed = preventDefaultByEnterPress(event);;
+                                    if (!enterPressed) return;
+                                    handleNodeName(nodeName);
+                                }}
+                            />
+                        }}
+                    />
+                    <Button
+                        variant="contained"
+                        component="label"
+                        style={{marginLeft: 10}}
+                        onClick={() => handleNodeName(nodeName)}
+                    >
+                        GO
+                    </Button>
+                </div>
                 {
                     isVisibleCoincidenceNotice &&
                     <Typography variant='body2' gutterBottom>
@@ -131,13 +164,21 @@ export default function SidebarContentView({
                 {depsTreeUI}
             </TabPanel>
             <TabPanel value={tabIndex} name={'dependenciesGraph'} index={1}>
-                <TextField
-                    label='Введите название сущности'
-                    variant='outlined'
-                    onChange={updateNodeName}
-                    value={nodeName}
-                    onKeyPress={handleNodeName}
-                    style={{width: 250}}
+                <Autocomplete
+                    value={{label: nodeName}}
+                    disablePortal
+                    options={autocompleteOptions}
+                    sx={{ width: 300 }}
+                    onChange={(event) => {
+                        const selectedNodeName = event.currentTarget.textContent as string;
+                        updateNodeName(selectedNodeName);
+                        handleNodeName(selectedNodeName);
+                    }}
+                    renderInput={(params) => <TextField {...params} label='Введите название сущности' 
+                    onKeyPress={(event: any) => {
+                        preventDefaultByEnterPress(event);
+                    }}
+                    />}
                 />
             </TabPanel>
          </Box>
