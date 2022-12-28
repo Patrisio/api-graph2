@@ -64,6 +64,7 @@ export default function Graph() {
 		if (parsedYamlFileList.length === 1) {
 			const yamlFile = parsedYamlFileList[0].content;
 			const yamlToJson = parse(yamlFile);
+
 			setFrontApi(yamlToJson)
 
 			return;
@@ -84,6 +85,7 @@ export default function Graph() {
 			<Toolbar
 				handleOpen={handleDrawerOpen}
 				open={isDrawerOpen}
+				setFrontApi={setFrontApi}
 			/>
 			<Sidebar
 				onClose={handleDrawerClose}
