@@ -10,18 +10,18 @@ export default function Toolbar({
     open,
     setFrontApi
 }: any) {
-    const [isDemoDataButtonVisible, toggleDemoDataButtonVisible] = useState(true);
-    const loadDemoData = () => {
-        setFrontApi((window as any).demoData);
-        toggleDemoDataButtonVisible(!isDemoDataButtonVisible);
-    };
+    // const [isDemoDataButtonVisible, toggleDemoDataButtonVisible] = useState(true);
+    // const loadDemoData = () => {
+    //     setFrontApi((window as any).demoData);
+    //     toggleDemoDataButtonVisible(!isDemoDataButtonVisible);
+    // };
 
     return (
         <MUIToolbar>
             <Typography variant='h6' noWrap sx={{ flexGrow: 1 }} component='div'>
                 Визуализация зависимостей EMRM-API
             </Typography>
-            {
+            {/* {
                 isDemoDataButtonVisible && <Button
                     onClick={loadDemoData}
                     style={{marginRight: 50}}
@@ -29,7 +29,7 @@ export default function Toolbar({
                 >
                     Загрузить демо-данные
                 </Button>
-            }
+            } */}
             <IconButton
                 color='inherit'
                 aria-label='open drawer'
