@@ -1,0 +1,1 @@
+export {saveToLocalStorage} from './saveToLocalStorage';

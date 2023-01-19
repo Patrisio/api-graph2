@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,6 +9,9 @@ import {GraphContext} from '../contexts/GraphProvider';
 import {GRAPH_RENDERING_STATUS} from '../contexts/types';
 import {FileUploader} from '../../../components/FileUploader';
 import Autocomplete from '@mui/material/Autocomplete';
+import {parse} from 'yaml';
+import {Link} from 'react-router-dom';
+import {saveToLocalStorage} from '../../../helpers';
 
 type AutocompleteOption = {label: string};
 
@@ -92,6 +95,18 @@ export default function SidebarContentView({
         }
     };
 
+    const parseTextAndSetResultToFrontApi = (selectedFile: any, text: string) => {
+        saveToLocalStorage(
+            {
+                fileName: (selectedFile as any).name,
+                content: text,
+            }, 
+            'yamlFiles'
+        );
+        const apiJson = parse(text);
+        setFrontApi(apiJson);
+    };
+
     useEffect(() => {
         if (fullGraph === GRAPH_RENDERING_STATUS.RENDERED) {
             highlightGraphLinksByNodeName(nodeName, fullGraphData, true /* forceHandleGraph */);
@@ -104,8 +119,16 @@ export default function SidebarContentView({
             sx={{'& > :not(style)': { ml: 3, width: '40ch' }}}
             noValidate
             autoComplete='off'
-         >
-            <FileUploader onComplete={setFrontApi}/>
+        >
+            <Button variant="contained" component="label" style={{marginBottom: 10}}>
+                <Link to={'/logs-parser'} style={{textDecoration: 'none', color: '#fff'}}>
+                    Перейти к парсеру логов
+                </Link>
+            </Button>
+            <FileUploader
+                onComplete={parseTextAndSetResultToFrontApi}
+                label={'Загрузить файл (.yml/.yaml)'}
+            />
 
             <Tabs value={tabIndex} onChange={switchTabPanel}>
                 <Tab label="Full graph" />
