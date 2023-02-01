@@ -14,6 +14,15 @@ export default function LogsParser() {
 
     const unescapeAndBeautify = (text: string) => {
         const parsedLog = JSON.parse(text);
+
+        if (!parsedLog.contentBody) {
+            setParsedJson(parsedLog);
+            const beautifiedLogString = JSON.stringify(parsedLog, null, 2);
+            setCodeMirrorValue(beautifiedLogString);
+            setSelectedLogKey('all');
+            return;
+        }
+        
         const parsedLogContentBody = JSON.parse(parsedLog.contentBody);
         const result = {
             ...parsedLog,
