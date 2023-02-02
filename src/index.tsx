@@ -5,7 +5,7 @@ import App from './App';
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
+        <BrowserRouter basename='/api-graph2'>
             <App />
         </BrowserRouter>
     </React.StrictMode>,
